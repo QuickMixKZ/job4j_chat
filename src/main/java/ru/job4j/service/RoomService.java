@@ -24,7 +24,7 @@ public class RoomService {
     public Room findById(int id) {
         Optional<Room> room = roomRepository.findById(id);
         if (room.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found.");
         }
         return room.get();
     }
@@ -37,7 +37,7 @@ public class RoomService {
         if (roomRepository.existsById(id)) {
             roomRepository.deleteById(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found");
         }
     }
 }

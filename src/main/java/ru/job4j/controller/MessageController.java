@@ -31,6 +31,12 @@ public class MessageController {
     @PostMapping("/")
     public ResponseEntity<Room> addMessage(@RequestParam("idRoom") int idRoom,
                                            @RequestBody Message message) {
+        if (message.getUser() == null) {
+            throw new NullPointerException("User mustn't be empty");
+        }
+        if (message.getText() == null) {
+            throw new NullPointerException("Text mustn't be empty");
+        }
         Room room = roomService.findById(idRoom);
         User user = userService.findById(message.getUser().getId());
         message.setUser(user);

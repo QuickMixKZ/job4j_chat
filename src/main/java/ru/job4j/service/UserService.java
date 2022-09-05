@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
     public User findById(int id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return user.get();
     }
@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
     public User save(User user) {
         Optional<User> userDb = userRepository.findUserByUsername(user.getUsername());
         if (userDb.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username already exists");
         }
         return userRepository.save(user);
     }
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsById(user.getId())) {
             userRepository.save(user);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
 

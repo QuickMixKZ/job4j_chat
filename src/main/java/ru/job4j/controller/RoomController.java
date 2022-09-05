@@ -38,6 +38,12 @@ public class RoomController {
 
     @PostMapping("/")
     public ResponseEntity<Room> createRoom(@RequestBody Room room) {
+        if (room.getUser() == null) {
+            throw new NullPointerException("User mustn't be empty.");
+        }
+        if (room.getName() == null) {
+            throw new NullPointerException("Name mustn't be empty.");
+        }
         userService.findById(room.getUser().getId());
         room.setCreated(LocalDate.now());
         return new ResponseEntity<>(

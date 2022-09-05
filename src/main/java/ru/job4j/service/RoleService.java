@@ -25,7 +25,7 @@ public class RoleService {
     public Role findById(int id) {
         Optional<Role> role = roleRepository.findById(id);
         if (role.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found");
         }
         return role.get();
     }
@@ -33,7 +33,7 @@ public class RoleService {
     public Role findByName(String roleName) {
         Optional<Role> role = roleRepository.findByName(roleName);
         if (role.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found");
         }
         return role.get();
     }
