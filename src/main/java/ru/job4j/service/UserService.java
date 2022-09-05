@@ -1,6 +1,9 @@
 package ru.job4j.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.User;
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -32,15 +35,31 @@ public class UserService {
     }
 
     public User save(User user) {
+        Optional<User> userDb = userRepository.findUserByUsername(user.getUsername());
+        if (userDb.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+        }
         return userRepository.save(user);
     }
 
     public void update(User user) {
         if (userRepository.existsById(user.getId())) {
-
             userRepository.save(user);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
+    }
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findUserByUsername(name);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = findByName(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Username not found");
+        }
+        return user.get();
     }
 }
