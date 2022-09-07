@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dto.UserDTO;
 import ru.job4j.handler.GlobalExceptionHandler;
+import ru.job4j.handler.Operation;
 import ru.job4j.model.User;
 import ru.job4j.service.RoleService;
 import ru.job4j.service.UserService;
@@ -49,8 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<User> signUp(@RequestBody User user) {
-        validateUser(user);
+    public ResponseEntity<User> signUp(@Validated(Operation.OnCreate.class) @RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         user.addRole(roleService.findByName("ROLE_USER"));
         return new ResponseEntity<>(
@@ -60,8 +61,7 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        validateUser(user);
+    public ResponseEntity<User> updateUser(@Validated(Operation.OnUpdate.class) @RequestBody User user) {
         userService.update(user);
         return ResponseEntity.ok().build();
     }
@@ -86,12 +86,4 @@ public class UserController {
         LOGGER.error(e.getMessage());
     }
 
-    private void validateUser(User user) {
-        if (user.getUsername() == null || user.getPassword() == null) {
-            throw new NullPointerException("Username and password mustn't be empty");
-        }
-        if (user.getPassword().length() < 5) {
-            throw new IllegalArgumentException("Password must have at least 5 characters");
-        }
-    }
 }

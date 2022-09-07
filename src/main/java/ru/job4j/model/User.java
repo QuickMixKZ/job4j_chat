@@ -1,10 +1,15 @@
 package ru.job4j.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.job4j.handler.Operation;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,13 +21,28 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Min(value = 1, message = "ID mustn't be empty, or less then 1",
+            groups = {Operation.OnUpdate.class})
     private int id;
+    @NotBlank(message = "Username must not be empty.",
+            groups =
+                    {Operation.OnUpdate.class,
+                            Operation.OnCreate.class})
     private String username;
+    @Length(min = 6,
+            message = "Password must have at least 6 characters.",
+            groups =
+                    {Operation.OnUpdate.class,
+                            Operation.OnCreate.class})
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @Size(min = 1,
+            message = "User must have at least 1 role",
+            groups =
+                    {Operation.OnUpdate.class})
     private Set<Role> roles = new HashSet<>();
 
     @JsonCreator

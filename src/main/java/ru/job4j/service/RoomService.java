@@ -34,6 +34,10 @@ public class RoomService {
     }
 
     public Room save(Room room) {
+        Optional<Room> roomDb = roomRepository.findByName(room.getName());
+        if (roomDb.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room with such name already exists");
+        }
         return roomRepository.save(room);
     }
 

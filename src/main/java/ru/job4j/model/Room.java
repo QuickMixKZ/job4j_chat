@@ -1,6 +1,9 @@
 package ru.job4j.model;
 
+import ru.job4j.handler.Operation;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,6 +16,8 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Name must not be empty.",
+            groups = {Operation.OnCreate.class})
     @Column(name = "name")
     private String name;
     @Column(name = "created")

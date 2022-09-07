@@ -2,9 +2,13 @@ package ru.job4j.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dto.RoomDTO;
+import ru.job4j.handler.Operation;
 import ru.job4j.model.Room;
+import ru.job4j.model.User;
 import ru.job4j.service.RoomService;
 import ru.job4j.service.UserService;
 
@@ -37,14 +41,9 @@ public class RoomController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Room> createRoom(@RequestBody Room room) {
-        if (room.getUser() == null) {
-            throw new NullPointerException("User mustn't be empty.");
-        }
-        if (room.getName() == null) {
-            throw new NullPointerException("Name mustn't be empty.");
-        }
-        userService.findById(room.getUser().getId());
+    public ResponseEntity<Room> createRoom(@Validated(Operation.OnCreate.class) @RequestBody Room room) {
+        User currentUser = userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        room.setUser(currentUser);
         room.setCreated(LocalDate.now());
         return new ResponseEntity<>(
                 roomService.save(room),

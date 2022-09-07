@@ -3,7 +3,6 @@ package ru.job4j.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.dto.UserDTO;
@@ -74,16 +73,16 @@ public class UserService implements UserDetailsService {
         return currentUser;
     }
 
-    public Optional<User> findByName(String name) {
-        return userRepository.findUserByUsername(name);
+    public User findByName(String name) {
+        Optional<User> user = userRepository.findUserByUsername(name);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not found");
+        }
+        return user.get();
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = findByName(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Username not found");
-        }
-        return user.get();
+    public UserDetails loadUserByUsername(String username) {
+        return findByName(username);
     }
 }
