@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.dto.UserDTO;
 import ru.job4j.handler.GlobalExceptionHandler;
 import ru.job4j.model.User;
 import ru.job4j.service.RoleService;
@@ -63,6 +64,14 @@ public class UserController {
         validateUser(user);
         userService.update(user);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity<User> patch(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(
+                userService.patch(userDTO),
+                HttpStatus.OK
+        );
     }
 
     @ExceptionHandler(value = { IllegalArgumentException.class })

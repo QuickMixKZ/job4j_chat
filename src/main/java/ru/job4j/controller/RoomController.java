@@ -3,13 +3,13 @@ package ru.job4j.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.dto.RoomDTO;
 import ru.job4j.model.Room;
 import ru.job4j.service.RoomService;
 import ru.job4j.service.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/room")
@@ -56,6 +56,14 @@ public class RoomController {
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         roomService.deleteById(id);
         return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity<Room> patch(@RequestBody RoomDTO roomDTO) {
+        return new ResponseEntity<>(
+                roomService.patch(roomDTO),
                 HttpStatus.OK
         );
     }
