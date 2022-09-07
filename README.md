@@ -9,3 +9,23 @@
  - PostgreSQL
  - Spring Boot
  - Spring REST
+ - Spring Security, JWT
+
+Для запуска требуется:
+ - Java 17
+ - Maven
+ - PostgreSQL
+
+Порядок запуска:
+1. Создать базу данных
+````
+CREATE DATABASE chat
+````
+2. Запустить плагин liquibase для создания таблиц в БД.
+````
+mvn liquibase:update
+````
+3. Запустить проект
+````
+mvn spring-boot:run
+````

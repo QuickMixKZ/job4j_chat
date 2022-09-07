@@ -1,7 +1,6 @@
 package ru.job4j.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -16,7 +15,7 @@ public class Message {
 
     private LocalDateTime created;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author_id")
     private User user;
 
     public int getId() {

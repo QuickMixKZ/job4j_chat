@@ -3,8 +3,8 @@ package ru.job4j.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.job4j.repository.RoleRepository;
 import ru.job4j.model.Role;
+import ru.job4j.repository.RoleRepository;
 
 import java.util.List;
 import java.util.Optional;

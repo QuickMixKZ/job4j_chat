@@ -16,7 +16,7 @@ create table rooms(
     id SERIAL PRIMARY KEY,
     name VARCHAR UNIQUE,
     created TIMESTAMP not null default now(),
-    user_id INT REFERENCES users(id)
+    creator_id INT REFERENCES users(id)
 );
 
 CREATE TABLE messages(
@@ -24,7 +24,7 @@ CREATE TABLE messages(
    text VARCHAR(1000),
    created TIMESTAMP DEFAULT now(),
    room_id INT REFERENCES rooms(id),
-   user_id INT REFERENCES users(id)
+   author_id INT REFERENCES users(id)
 );
 
 create table rooms_messages(

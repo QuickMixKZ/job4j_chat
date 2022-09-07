@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.handler.GlobalExceptionHandler;
+import ru.job4j.model.User;
 import ru.job4j.service.RoleService;
 import ru.job4j.service.UserService;
-import ru.job4j.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
