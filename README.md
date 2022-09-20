@@ -21,11 +21,7 @@
 ````
 CREATE DATABASE chat
 ````
-2. Запустить плагин liquibase для создания таблиц в БД.
-````
-mvn liquibase:update
-````
-3. Запустить проект
+2. Запустить проект
 ````
 mvn spring-boot:run
 ````

@@ -42,11 +42,10 @@ public class RoomService {
     }
 
     public void deleteById(int id) {
-        if (roomRepository.existsById(id)) {
-            roomRepository.deleteById(id);
-        } else {
+        if (!roomRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found");
         }
+        roomRepository.deleteById(id);
     }
 
     public Room patch(RoomDTO roomDTO) {

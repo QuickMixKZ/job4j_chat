@@ -47,11 +47,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void update(User user) {
-        if (userRepository.existsById(user.getId())) {
-            userRepository.save(user);
-        } else {
+        if (!userRepository.existsById(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
+        userRepository.save(user);
     }
 
     public User patch(UserDTO userDTO) {
