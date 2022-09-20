@@ -55,12 +55,11 @@ public class RoomService {
         }
         Room currentRoom = room.get();
         Optional.ofNullable(roomDTO.getName()).ifPresent(currentRoom::setName);
-        Optional.of(roomDTO.getCreatorId()).ifPresent(userId -> {
-            if (userId != 0) {
-                User user = userService.findById(userId);
-                currentRoom.setUser(user);
-            }
-        });
+        int userId = roomDTO.getCreatorId();
+        if (userId != 0) {
+            User user = userService.findById(userId);
+            currentRoom.setUser(user);
+        }
         roomRepository.save(currentRoom);
         return currentRoom;
     }
