@@ -4,6 +4,7 @@ import ru.job4j.handler.Operation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,6 +23,8 @@ public class Room {
     private String name;
     @Column(name = "created")
     private LocalDate created;
+    @NotNull(message = "User must not be empty.",
+            groups = {Operation.OnCreate.class})
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User user;

@@ -2,7 +2,6 @@ package ru.job4j.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dto.RoomDTO;
@@ -42,7 +41,7 @@ public class RoomController {
 
     @PostMapping("/")
     public ResponseEntity<Room> createRoom(@Validated(Operation.OnCreate.class) @RequestBody Room room) {
-        User currentUser = userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        User currentUser = userService.findById(room.getUser().getId());
         room.setUser(currentUser);
         room.setCreated(LocalDate.now());
         return new ResponseEntity<>(
